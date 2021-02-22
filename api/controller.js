@@ -2,7 +2,7 @@
 
 var properties = require('../package.json')
 
-var controllers = {
+var controller = {
    about: function(req, res) {
        var aboutInfo = {
            name: properties.name,
@@ -14,4 +14,4 @@ var controllers = {
    },
 };
 
-module.exports = controllers;
+module.exports = controller;
