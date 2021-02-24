@@ -1,14 +1,7 @@
 'use strict';
 
-var properties = require('../package.json')
-const { Kafka } = require('kafkajs');
-
-const kafka = new Kafka({
-    clientId: 'notification-app',
-    brokers: ['localhost:9092']
-});
-
-const topicName = 'notify';
+var properties = require('../package.json');
+const publisher = require('../service/publisher');
 
 var controller = {
    about: function(req, res) {
@@ -21,23 +14,7 @@ var controller = {
        res.json(aboutInfo);
    },
     publish: function(req, res) {
-        async function processProducer (){
-            const producer = kafka.producer();
-            await producer.connect();
-            for (let i = 0; i < 3; i++) {
-                await producer.send({
-                    topic: topicName,
-                    messages: [
-                        { value: req },
-                    ],
-                });
-            }
-        };
-        
-        processProducer().then(() => {
-            console.log(req + " publiched into topic " + topicName);
-            // process.exit();
-        });
+        publisher.sendTopic(req);
     }
 };
 
